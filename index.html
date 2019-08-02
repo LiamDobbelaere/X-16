@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>X-16 VM</title>
+    <style>
+      body {
+        background-color: #181920;
+      }
+
+      #canvas {
+        width: 320px;
+        height: 240px;
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        border: 1px solid #343542;
+        background-color: black;
+        image-rendering: optimizeSpeed;
+        image-rendering: -moz-crisp-edges;
+        image-rendering: -webkit-optimize-contrast;
+        image-rendering: -o-crisp-edges;
+        image-rendering: pixelated;
+        -ms-interpolation-mode: nearest-neighbor;
+        transform-origin: 50% 0;
+        transform: scale(3);
+        margin-top: 64px;
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="canvas" width="160" height="120"></canvas>
+
+    <script src="x16vm.js"></script>
+    <script>
+      new X16VM().cpu.run();
+
+      /*var ctx = document.getElementById("canvas").getContext("2d");
+
+      var x = 0;
+      var y = 0;
+
+      var colors = ["#ff0000", "#00ff00", "#00ffff"];
+      var colorIndex = 0;
+      ctx.fillStyle = colors[Math.floor(Math.random() * colors.length)];  
+      for (var i = 0; i < 10000; i++) {
+        if (i % 100 == 0) {
+          colorIndex++;
+          if (colorIndex >= colors.length) {
+            colorIndex = 0;
+          }
+        }
+
+        ctx.fillStyle = colors[colorIndex];
+        ctx.fillRect(x, y, 1, 1);
+        x += -1 + Math.round(Math.random() * 2);
+        y += -1 + Math.round(Math.random() * 2);
+
+        x = Math.min(Math.max(x, 0), 160);
+        y = Math.min(Math.max(y, 0), 120);
+      }*/
+    </script>
+  </body>
+</html>
