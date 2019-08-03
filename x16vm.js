@@ -9,6 +9,7 @@ function X16VMCPU(x16vm) {
   this.stack = [];
   this.sp = -1;
   this.ip = 0;
+  this.lastTick = new Date();
 
   this.instructionMap = {
     1: this.instructions.PUSH.bind(this),
@@ -22,12 +23,55 @@ X16VMCPU.prototype.run = function() {
   this.program = [...inputProgram, 100]; //[1, 10, 1, 6, 2, 3];
 
   this.ip = 0;
-  while (this.ip < this.program.length) {
+  this.lastTick = window.performance.now();
+  this.updateStackVis();
+  this.updateInstructionVis();
+
+  window.requestAnimationFrame(this.tick.bind(this));
+};
+
+X16VMCPU.prototype.tick = function() {
+  window.requestAnimationFrame(this.tick.bind(this));
+
+  if (
+    this.ip < this.program.length &&
+    window.performance.now() - this.lastTick > 1000
+  ) {
     this.instructionMap[this.program[this.ip]]();
     this.ip++;
+    this.lastTick = window.performance.now();
+    this.updateStackVis();
+    this.updateInstructionVis();
   }
+};
 
-  console.log(this.stack);
+X16VMCPU.prototype.updateStackVis = function() {
+  var stack = document.getElementById("stack-vis");
+  stack.innerHTML = "";
+  this.stack.forEach((s, i) => {
+    if (i == this.sp) {
+      stack.innerHTML += "<li class='sp'>" + s + "</li>";
+    } else {
+      stack.innerHTML += "<li>" + s + "</li>";
+    }
+  });
+};
+
+X16VMCPU.prototype.updateInstructionVis = function() {
+  var instr = document.getElementById("instruction-vis");
+  instr.innerHTML = "";
+  this.program.forEach((ins, i) => {
+    if (i == this.ip) {
+      instr.innerHTML +=
+        "<li class='ip'>" +
+        ins +
+        " " +
+        (this.instructionMap[ins].name.split(" ")[1] || "") +
+        "</li>";
+    } else {
+      instr.innerHTML += "<li>" + ins + "</li>";
+    }
+  });
 };
 
 X16VMCPU.prototype.instructions = {
