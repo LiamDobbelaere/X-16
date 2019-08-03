@@ -1,1 +1,1 @@
-var inputProgram = [1,2,3]
+var inputProgram = [1,5,1,6,2,1,10,2,1,2,3]

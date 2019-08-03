@@ -13,18 +13,21 @@ function X16VMCPU(x16vm) {
   this.instructionMap = {
     1: this.instructions.PUSH.bind(this),
     2: this.instructions.ADD.bind(this),
-    3: this.instructions.PRINT.bind(this)
+    3: this.instructions.SUB.bind(this),
+    100: this.instructions.PRINT.bind(this)
   };
 }
 
 X16VMCPU.prototype.run = function() {
-  this.program = [1, 10, 1, 6, 2, 3];
+  this.program = [...inputProgram, 100]; //[1, 10, 1, 6, 2, 3];
 
   this.ip = 0;
   while (this.ip < this.program.length) {
     this.instructionMap[this.program[this.ip]]();
     this.ip++;
   }
+
+  console.log(this.stack);
 };
 
 X16VMCPU.prototype.instructions = {
@@ -32,7 +35,11 @@ X16VMCPU.prototype.instructions = {
     this.stack[++this.sp] = this.program[++this.ip];
   },
   ADD: function() {
-    this.stack[this.sp - 1] = this.stack[this.sp] + this.stack[this.sp - 1];
+    this.stack[this.sp - 1] = this.stack[this.sp - 1] + this.stack[this.sp];
+    this.sp--;
+  },
+  SUB: function() {
+    this.stack[this.sp - 1] = this.stack[this.sp - 1] - this.stack[this.sp];
     this.sp--;
   },
   PRINT: function() {
@@ -42,3 +49,7 @@ X16VMCPU.prototype.instructions = {
     );
   }
 };
+
+var module = module || { exports: {} };
+
+module.exports.X16VMCPU = X16VMCPU;
