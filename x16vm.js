@@ -7,7 +7,7 @@ function X16VMCPU(x16vm) {
 
   this.program = [];
   this.stack = [];
-  this.sp = 0;
+  this.sp = -1;
   this.ip = 0;
 
   this.instructionMap = {
